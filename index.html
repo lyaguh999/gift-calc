@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Калькулятор подарков</title>
+
   <style>
     :root { --bg:#0b1220; --card:#121b2e; --text:#e8eefc; --muted:#aab6d3; --line:#233152; --accent:#4ea1ff; }
     body {
@@ -31,7 +32,7 @@
 
     .top {
       display: grid;
-      grid-template-columns: 1fr 260px;
+      grid-template-columns: 1fr 280px;
       gap: 12px;
       align-items: end;
       margin-bottom: 12px;
@@ -56,13 +57,12 @@
     }
     .num { text-align: right; }
 
-    /* Стили для кнопок */
     .btn {
-      background: transparent; 
-      color: var(--text); 
+      background: transparent;
+      color: var(--text);
       border: 1px solid var(--line);
-      padding: 10px 12px; 
-      border-radius: 10px; 
+      padding: 10px 12px;
+      border-radius: 10px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -71,14 +71,11 @@
       font-family: inherit;
       font-size: 14px;
       transition: 0.2s;
+      white-space: nowrap;
     }
-    .btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
     .btn svg { width: 16px; height: 16px; fill: currentColor; }
 
-    /* readonly поле */
     .readonly {
       background: rgba(12,20,40,0.55);
       color: rgba(232,238,252,0.95);
@@ -100,8 +97,7 @@
     }
     .grand { font-size: 18px; font-weight: 850; font-variant-numeric: tabular-nums; }
 
-    /* Правый блок подсчета */
-    .side-title { font-weight: 800; margin: 0 0 10px; }
+    .side-title { font-weight: 800; margin: 0 0 10px; font-size: 16px; }
     .side-grid { display: grid; gap: 10px; }
     .side-row { display: grid; grid-template-columns: 1fr 120px; gap: 10px; align-items: center; }
     .eq {
@@ -119,7 +115,6 @@
     .eq .lhs { color: var(--muted); }
     .eq .rhs { font-weight: 900; }
 
-    /* НОВЫЙ БЛОК ПОДДЕРЖКИ */
     .support-block {
       margin-top: 20px;
       padding: 16px;
@@ -146,9 +141,29 @@
     .support-text p:last-child { margin-bottom: 0; }
     .support-text b { color: var(--text); font-weight: 700; }
 
+    .mon-head {
+      display:flex; justify-content: space-between; align-items: baseline;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .pill {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border: 1px solid var(--line);
+      background: rgba(12,20,40,0.35);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ff6b6b; }
+    .dot.ok { background: #4ade80; }
+    .dot.wait { background: #fbbf24; }
+
     @media (max-width: 980px) {
       .layout { grid-template-columns: 1fr; }
       .top { grid-template-columns: 1fr; }
+      .side-row { grid-template-columns: 1fr 140px; }
     }
   </style>
 </head>
@@ -158,20 +173,21 @@
     <h1>Калькулятор подарков</h1>
 
     <div class="layout">
-      <!-- ЛЕВАЯ ЧАСТЬ: таблица -->
+      <!-- ЛЕВАЯ ЧАСТЬ: калькулятор -->
       <div class="card">
         <div class="top">
           <div class="hint">
             Введите «Цена за 1 шт для всех» — она применится ко всем товарам.<br>
-            Количество для <b>«Другой Подарок»</b> берётся автоматически из блока справа: сумма 3 полей.
+            Количество для <b>«Другой Подарок»</b> берётся автоматически из блока справа: сумма 3 полей.<br>
+            Данные не сохраняются: после обновления страницы значения сбросятся.
           </div>
 
           <div>
             <label for="globalPrice">Цена за 1 шт для всех</label>
             <input id="globalPrice" class="num" inputmode="decimal" placeholder="0.00" />
-            <div style="margin-top:10px; display:flex; gap:10px;">
+            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap: wrap;">
               <button id="resetBtn" type="button" class="btn">Сбросить</button>
-              
+
               <a href="https://github.com/lyaguh999/gift-calc" target="_blank" rel="noopener noreferrer" class="btn">
                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                 Исходный код
@@ -258,10 +274,46 @@
       </div>
     </div>
 
-    <!-- БЛОК ПОДДЕРЖКИ (НОВЫЙ) -->
+    <!-- МОНИТОРИНГ ЦЕН -->
+    <div class="card" style="margin-top: 14px;">
+      <div class="mon-head">
+        <h2 style="margin:0; font-size:18px;">Мониторинг цен подарков (Тех. работы)</h2>
+        <div class="pill" id="monPill">
+          <span class="dot wait" id="monDot"></span>
+          <span>Обновлено: <span id="monUpdated">—</span></span>
+          <button class="btn" type="button" id="monRefreshBtn" style="padding:6px 10px; font-size:12px;">Обновить</button>
+        </div>
+      </div>
+
+      <div class="hint" style="margin-top:8px;">
+        Берём данные из истории аукциона через Worker (секреты не на сайте). Обновление каждые 2 минуты.
+      </div>
+
+      <div style="overflow-x:auto; margin-top:10px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Предмет</th>
+              <th style="text-align:right;">Мин. за 1 шт</th>
+              <th style="text-align:right;">Средняя за 1 шт</th>
+              <th style="text-align:right;">Записей</th>
+              <th style="text-align:right;">В калькулятор</th>
+            </tr>
+          </thead>
+          <tbody id="monBody">
+            <tr><td colspan="5" style="padding:12px; color:var(--muted);">Загрузка…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hint" style="margin-top:8px;">
+        Кнопка «Средняя» подставит цену в поле «Цена за 1 шт для всех».
+      </div>
+    </div>
+
+    <!-- БЛОК ПОДДЕРЖКИ -->
     <div class="support-block">
       <div class="support-icon">
-        <!-- Иконка кофе -->
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/>
         </svg>
@@ -275,17 +327,18 @@
   </div>
 
   <script>
+    // ---------------------------
+    // Калькулятор
+    // ---------------------------
     const tbody = document.getElementById('tbody');
     const grandTotalEl = document.getElementById('grandTotal');
     const globalPriceEl = document.getElementById('globalPrice');
     const resetBtn = document.getElementById('resetBtn');
 
     const otherQtyEl = document.getElementById('otherQty');
-
     const small1El = document.getElementById('small1');
     const small2El = document.getElementById('small2');
     const small3El = document.getElementById('small3');
-
     const eqAEl = document.getElementById('eqA');
     const eqBEl = document.getElementById('eqB');
     const eqCEl = document.getElementById('eqC');
@@ -297,15 +350,34 @@
       const n = Number.parseFloat(cleaned);
       return Number.isFinite(n) ? Math.max(0, n) : 0;
     }
-
-    function fmt(n) {
+    function fmtMoney(n) {
       return (Math.round(n * 100) / 100).toFixed(2);
     }
-
     function fmtQty(n) {
       if (Number.isInteger(n)) return String(n);
       const rounded = Math.round(n * 100) / 100;
       return String(rounded);
+    }
+
+    function recalc() {
+      let grand = 0;
+      for (const tr of tbody.querySelectorAll('tr')) {
+        const price = parseNumber(tr.querySelector('.price')?.value ?? '');
+        const qty = parseNumber(tr.querySelector('.qty')?.value ?? '');
+        const total = price * qty;
+
+        tr.querySelector('.row-total').textContent = fmtMoney(total);
+        grand += total;
+      }
+      grandTotalEl.textContent = fmtMoney(grand);
+    }
+
+    function applyGlobalPrice() {
+      const gp = globalPriceEl.value; // сохраняем формат ввода (точка/запятая)
+      for (const priceInput of tbody.querySelectorAll('.price')) {
+        priceInput.value = gp;
+      }
+      recalc();
     }
 
     function updateSmallGiftsSum() {
@@ -323,31 +395,12 @@
       recalc();
     }
 
-    function recalc() {
-      let grand = 0;
-      for (const tr of tbody.querySelectorAll('tr')) {
-        const price = parseNumber(tr.querySelector('.price')?.value ?? '');
-        const qty = parseNumber(tr.querySelector('.qty')?.value ?? '');
-        const total = price * qty;
-        tr.querySelector('.row-total').textContent = fmt(total);
-        grand += total;
-      }
-      grandTotalEl.textContent = fmt(grand);
-    }
-
-    function applyGlobalPrice() {
-      const gp = globalPriceEl.value;
-      for (const priceInput of tbody.querySelectorAll('.price')) {
-        priceInput.value = gp;
-      }
-      recalc();
-    }
-
     globalPriceEl.addEventListener('input', applyGlobalPrice);
+
     tbody.addEventListener('input', (e) => {
       if (e.target.matches('.price, .qty')) recalc();
     });
-    
+
     [small1El, small2El, small3El].forEach(el => {
       el.addEventListener('input', updateSmallGiftsSum);
     });
@@ -360,13 +413,89 @@
       const rows = tbody.querySelectorAll('tr');
       rows[0].querySelector('.qty').value = '1';
       rows[1].querySelector('.qty').value = '1';
+
       small1El.value = '0';
       small2El.value = '0';
       small3El.value = '0';
+
       updateSmallGiftsSum();
     });
 
+    // ---------------------------
+    // Мониторинг (через Worker)
+    // ---------------------------
+    const WORKER_URL = "https://YOUR-WORKER.workers.dev/prices"; // <-- ЗАМЕНИ НА СВОЙ
+    const MON_REFRESH_MS = 120000;
+
+    const monBody = document.getElementById('monBody');
+    const monUpdated = document.getElementById('monUpdated');
+    const monRefreshBtn = document.getElementById('monRefreshBtn');
+    const monDot = document.getElementById('monDot');
+
+    function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function fmtInt(n){
+      const x = Number(n || 0);
+      return Number.isFinite(x) ? Math.round(x).toLocaleString("ru-RU") : "0";
+    }
+
+    async function loadMonitor() {
+      monDot.className = "dot wait";
+      try {
+        const r = await fetch(WORKER_URL, { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const data = await r.json();
+
+        monUpdated.textContent = data.updatedAt ? new Date(data.updatedAt).toLocaleString("ru-RU") : "—";
+
+        const items = Array.isArray(data.items) ? data.items : [];
+        if (!items.length) {
+          monBody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#ff6b6b;">Нет данных</td></tr>`;
+          monDot.className = "dot";
+          return;
+        }
+
+        monBody.innerHTML = items.map((x, idx) => {
+          const avg = Number(x.avgPerUnit || 0);
+          const min = Number(x.minPerUnit || 0);
+          const samples = Number(x.samples || 0);
+          return `
+            <tr>
+              <td>${esc(x.name)}</td>
+              <td style="text-align:right;">${fmtInt(min)} ₽</td>
+              <td style="text-align:right; color: var(--accent);">${fmtInt(avg)} ₽</td>
+              <td style="text-align:right; color: var(--muted);">${fmtInt(samples)}</td>
+              <td style="text-align:right;">
+                <button class="btn" type="button" data-use="${esc(String(avg))}" style="padding:6px 10px; font-size:12px;">Средняя</button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        monDot.className = "dot ok";
+      } catch (e) {
+        monBody.innerHTML = `<tr><td colspan="5" style="padding:12px; color:#ff6b6b;">Ошибка мониторинга: ${esc(String(e.message || e))}</td></tr>`;
+        monDot.className = "dot";
+      }
+    }
+
+    monRefreshBtn.addEventListener('click', loadMonitor);
+
+    // Клик по кнопке "Средняя" -> подставить в общую цену
+    monBody.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-use]');
+      if (!btn) return;
+      const value = btn.getAttribute('data-use') || "0";
+      // ставим в поле глобальной цены и применяем
+      globalPriceEl.value = String(value);
+      applyGlobalPrice();
+      globalPriceEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    // Инициализация
     updateSmallGiftsSum();
+    recalc();
+    loadMonitor();
+    setInterval(loadMonitor, MON_REFRESH_MS);
   </script>
 </body>
 </html>
